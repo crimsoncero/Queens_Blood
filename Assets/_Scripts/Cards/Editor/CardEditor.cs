@@ -52,56 +52,46 @@ public class CardEditor : Editor
     private void ShowGridButtons()
     {
         CardScriptable card = (CardScriptable)target;
-        TileEffectEnum[] grid = card.Grid;
         GUILayout.BeginVertical("box");
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < CardScriptable.GRID_HEIGHT; i++)
         {
             GUILayout.BeginHorizontal();
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < CardScriptable.GRID_WIDTH; j++)
             {
-                int index = i * 5 + j;
-                switch (grid[index])
+                TileEffectEnum tile = card[i, j];
+                var index = i * CardScriptable.GRID_HEIGHT + j;
+                GUI.color = tile switch
                 {
-                    case TileEffectEnum.None:
-                        GUI.color = Color.gray;
-                        break;
-                    case TileEffectEnum.Center:
-                        GUI.color = Color.white;
-                        break;
-                    case TileEffectEnum.Pawn:
-                        GUI.color = Color.yellow;
-                        break;
-                    case TileEffectEnum.Effect:
-                        GUI.color = Color.red;
-                        break;
-                    case TileEffectEnum.PawnAndEffect:
-                        GUI.color = Color.magenta;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    TileEffectEnum.None => Color.gray,
+                    TileEffectEnum.Center => Color.white,
+                    TileEffectEnum.Pawn => Color.yellow,
+                    TileEffectEnum.Effect => Color.red,
+                    TileEffectEnum.PawnAndEffect => Color.magenta,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
 
-                if (i == 2 && j == 2)
+                if (i == CardScriptable.GRID_WIDTH / 2 && j == CardScriptable.GRID_HEIGHT / 2)
                 {
                     GUI.enabled = false;                    
                 }
                 if (GUILayout.Button(String.Empty, GUILayout.Width(30), GUILayout.Height(30)))
                 {
-                    if ((int)grid[index] >= Enum.GetValues(typeof(TileEffectEnum)).Length - 2)
+                    if ((int)tile >= Enum.GetValues(typeof(TileEffectEnum)).Length - 2)
                     {
-                        grid[index] = TileEffectEnum.None;
+                        tile = TileEffectEnum.None;
                     }
                     else
                     {
-                        grid[index]++;
+                        tile++;
                     }
                 }
-                
                 GUI.enabled = true;
+
+                card[i, j] = tile;
+
             }
             GUILayout.EndHorizontal();
         }
         GUILayout.EndVertical();
-        card.Grid = grid;
     }
 }
