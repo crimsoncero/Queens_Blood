@@ -3,35 +3,68 @@ using System.Drawing;
 using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CustomEditor(typeof(CardScriptable))]
 public class CardEditor : Editor
 {
+    private const string CARD_EFFECT_PATH = "Assets/Scriptables/Settings/Card Effects.asset";
+    private CardEffects _cardEffects;
+    
     private SerializedProperty _triggerType;
     private SerializedProperty _onPlay;
     private SerializedProperty _onRemoved;
     private SerializedProperty _onChange;
-    
+    private SerializedProperty _name;
+    private SerializedProperty _power;
+    private SerializedProperty _rank;
+    private SerializedProperty _sprite;
+
+    private CardScriptable _card;
+    private void Awake()
+    {
+        _cardEffects = AssetDatabase.LoadAssetAtPath<CardEffects>(CARD_EFFECT_PATH);
+    }
+
     private void OnEnable()
     {
         _triggerType = serializedObject.FindProperty("_triggerType");
         _onPlay = serializedObject.FindProperty("_onPlay");
         _onRemoved = serializedObject.FindProperty("_onRemoved");
         _onChange = serializedObject.FindProperty("_onChange");
+        _name = serializedObject.FindProperty("_name");
+        _power = serializedObject.FindProperty("_power");
+        _rank = serializedObject.FindProperty("_rank");
+        _sprite = serializedObject.FindProperty("_sprite");
+        _card = target as CardScriptable;
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        EditorGUILayout.PropertyField(_triggerType);
-        ShowEvent();
+        ShowBasicData();
         ShowGrid();
-
+        ShowEvent();
+        
         serializedObject.ApplyModifiedProperties();
         EditorUtility.SetDirty((CardScriptable)target);
     }
+
+    private void ShowBasicData()
+    {
+        EditorGUILayout.PropertyField(_name);
+        EditorGUILayout.PropertyField(_rank);
+        EditorGUILayout.PropertyField(_power);
+
+       
+        _sprite.objectReferenceValue = EditorGUILayout.ObjectField(_card.Sprite, typeof(Sprite), allowSceneObjects: true,
+            GUILayout.Height(80), GUILayout.Width(80)) as Sprite;
+    }
+
     private void ShowEvent()
     {
+        EditorGUILayout.PropertyField(_triggerType);
+                
         switch(_triggerType.GetEnumValue<CardEffects.TriggerType>())
         {
             case CardEffects.TriggerType.None:
@@ -53,9 +86,13 @@ public class CardEditor : Editor
     private void ShowGrid()
     {
         GUILayout.Space(10);
+        GUILayout.BeginHorizontal();
         GUILayout.Label("Grid", EditorStyles.boldLabel);
-        
-        CardScriptable card = (CardScriptable)target;
+        if(GUILayout.Button("Reset Grid"))
+            ResetGrid();
+        GUILayout.EndHorizontal();
+
+        CardScriptable card = _card;
         GUILayout.BeginVertical("box");
         for (int i = 0; i < CardScriptable.GRID_HEIGHT; i++)
         {
@@ -109,8 +146,7 @@ public class CardEditor : Editor
         GUILayout.EndVertical();
         
         
-        if(GUILayout.Button("Reset Grid"))
-           ResetGrid();
+        
     }
 
     private void ResetGrid()
@@ -127,4 +163,5 @@ public class CardEditor : Editor
             }
         }
     }
+
 }
