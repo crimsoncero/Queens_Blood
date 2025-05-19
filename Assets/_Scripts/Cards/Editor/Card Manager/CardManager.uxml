@@ -1,0 +1,10 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Scripts/Cards/Editor/Card%20Manager/CardManager.uss?fileID=7433441132597879392&amp;guid=d627c6283f335154fa760e4dbbaa12f4&amp;type=3#CardManager" />
+    <engine:MultiColumnListView binding-source-selection-mode="AutoAssign" name="List">
+        <engine:Columns stretch-mode="GrowAndFill" primary-column-name="Name">
+            <engine:Column name="Name" width="60%" title="Name" cell-template="project://database/Assets/_Scripts/Cards/Editor/Card%20Manager/NameCellTemplate.uxml?fileID=9197481963319205126&amp;guid=da6ff45c021c96d4bb0dc9f38da782c7&amp;type=3#NameCellTemplate" stretchable="false" />
+            <engine:Column name="Rank" title="Rank" width="20%" cell-template="project://database/Assets/_Scripts/Cards/Editor/Card%20Manager/RankCellTemplate.uxml?fileID=9197481963319205126&amp;guid=ace30ee1b2b17b047a21e5a9bfd1a3e2&amp;type=3#RankCellTemplate" />
+            <engine:Column name="Power" title="Power" width="20%" cell-template="project://database/Assets/_Scripts/Cards/Editor/Card%20Manager/PowerCellTemplate.uxml?fileID=9197481963319205126&amp;guid=1777e3d32cabc0141a843f64bcde12d7&amp;type=3#PowerCellTemplate" />
+        </engine:Columns>
+    </engine:MultiColumnListView>
+</engine:UXML>

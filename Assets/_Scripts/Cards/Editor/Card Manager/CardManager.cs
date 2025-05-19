@@ -9,8 +9,9 @@ using UnityEngine.UIElements;
 public class CardManager : EditorWindow
 {
     private VisualElement _rightPane;
-    private ListView _leftPane;
+    private VisualElement _managerElement;
     
+    private List<CardScriptable> _cardList = new List<CardScriptable>();
     
     
     [MenuItem("Tools/Card Manager")]
@@ -22,32 +23,24 @@ public class CardManager : EditorWindow
 
     public void CreateGUI()
     {
-        var cardElementTree =
+        var managerElementTree = 
             AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-                "Assets/_Scripts/Cards/Editor/Card Manager/CardElement.uxml");
-        var cardElement = Instantiate(cardElementTree);
+                "Assets/_Scripts/Cards/Editor/Card Manager/CardManager.uxml");
+         _managerElement = managerElementTree.Instantiate();
         
-        // Get a list of all sprites in the project
-        var allObjectGuids = AssetDatabase.FindAssets("t:CardScriptable");
-        var allCards = new List<CardScriptable>();
-        foreach (var guid in allObjectGuids)
-        {
-            allCards.Add(AssetDatabase.LoadAssetAtPath<CardScriptable>(AssetDatabase.GUIDToAssetPath(guid)));
-        }
-
+         FindAllCards();
+        
         var splitView = new TwoPaneSplitView(0, 250, TwoPaneSplitViewOrientation.Horizontal);
         
         rootVisualElement.Add(splitView);
-        _leftPane = new ListView();
-        splitView.Add(_leftPane);
+        splitView.Add(_managerElement);
         _rightPane = new VisualElement();
         splitView.Add(_rightPane);
-
-        _leftPane.makeItem = () => new Label();
-        _leftPane.bindItem = (item, index) => { (item as Label).text = allCards[index].Name; };
-        _leftPane.itemsSource = allCards;
-        _leftPane.selectionChanged += OnCardSelectionChanged;
-
+        
+        MultiColumnListView listView = _managerElement.Q<MultiColumnListView>();
+        listView.itemsSource = _cardList;
+        listView.selectionChanged += OnCardSelectionChanged;
+        
     }
     
     private void OnCardSelectionChanged(IEnumerable<object> selectedCards)
@@ -55,8 +48,16 @@ public class CardManager : EditorWindow
         _rightPane.Clear();
         InspectorElement i = new InspectorElement(selectedCards.First() as CardScriptable);
         _rightPane.Add(i);
-        _leftPane.RefreshItems();
     }
-    
+
+    private void FindAllCards()
+    {
+        var allObjectGuids = AssetDatabase.FindAssets("t:CardScriptable");
+        _cardList = new List<CardScriptable>();
+        foreach (var guid in allObjectGuids)
+        {
+            _cardList.Add(AssetDatabase.LoadAssetAtPath<CardScriptable>(AssetDatabase.GUIDToAssetPath(guid)));
+        }  
+    }
 
 }
