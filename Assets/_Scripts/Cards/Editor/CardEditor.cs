@@ -18,7 +18,6 @@ public class CardEditor : Editor
     private SerializedProperty _name;
     private SerializedProperty _power;
     private SerializedProperty _rank;
-    private SerializedProperty _sprite;
 
     private CardScriptable _card;
     private void Awake()
@@ -35,7 +34,6 @@ public class CardEditor : Editor
         _name = serializedObject.FindProperty("_name");
         _power = serializedObject.FindProperty("_power");
         _rank = serializedObject.FindProperty("_rank");
-        _sprite = serializedObject.FindProperty("_sprite");
         _card = target as CardScriptable;
     }
 
@@ -55,10 +53,6 @@ public class CardEditor : Editor
         EditorGUILayout.PropertyField(_name);
         EditorGUILayout.PropertyField(_rank);
         EditorGUILayout.PropertyField(_power);
-
-       
-        _sprite.objectReferenceValue = EditorGUILayout.ObjectField(_card.Sprite, typeof(Sprite), allowSceneObjects: true,
-            GUILayout.Height(80), GUILayout.Width(80)) as Sprite;
     }
 
     private void ShowEvent()

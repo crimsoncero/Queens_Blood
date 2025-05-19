@@ -24,4 +24,6 @@ public class PopUpAssetInspector : EditorWindow
         assetEditor.OnInspectorGUI();
         EditorGUILayout.EndVertical();
     }
+
+    
 }
