@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -60,4 +59,16 @@ public class CardManager : EditorWindow
         }  
     }
 
+    [MenuItem("Tools/Rename Cards #r")]
+    private static void RenameCards()
+    {
+        foreach (var asset in AssetDatabase.FindAssets("t:CardScriptable"))
+        {
+            var path = AssetDatabase.GUIDToAssetPath(asset);
+            var card = AssetDatabase.LoadAssetAtPath<CardScriptable>(path);
+            
+            if(!string.IsNullOrEmpty(card.Name))
+                AssetDatabase.RenameAsset(path, $"{card.Name}");
+        }
+    }
 }

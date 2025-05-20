@@ -75,12 +75,6 @@ public class CardScriptable : ScriptableObject
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
-        if (_name != string.Empty)
-        {
-            // Change file name to match name
-            
-        }
     }
     
 }
