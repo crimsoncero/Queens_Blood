@@ -19,9 +19,9 @@ public class CardScriptable : ScriptableObject
     public const int GRID_WIDTH = 5;
     public const int GRID_HEIGHT = 5;
     
-    [SerializeField] private UnityEvent<int> _onPlay;
-    [SerializeField] private UnityEvent<int> _onRemoved;
-    [SerializeField] private UnityEvent<int> _onChange;
+    [SerializeField] private UnityEvent<CardScriptable> _onPlay;
+    [SerializeField] private UnityEvent<CardScriptable> _onRemoved;
+    [SerializeField] private UnityEvent<CardScriptable> _onChange;
     [SerializeField] private CardEffects.TriggerType _triggerType;
 
     [SerializeField] private string _name;
@@ -47,9 +47,9 @@ public class CardScriptable : ScriptableObject
     public int Power => _power;
     public int Rank => _rank;
     public Sprite Sprite => _sprite;
-    public UnityEvent<int> OnPlay => _onPlay;
-    public UnityEvent<int> OnRemoved => _onRemoved;
-    public UnityEvent<int> OnChange => _onChange;
+    public UnityEvent<CardScriptable> OnPlay => _onPlay;
+    public UnityEvent<CardScriptable> OnRemoved => _onRemoved;
+    public UnityEvent<CardScriptable> OnChange => _onChange;
 
     private void OnValidate()
     {
@@ -79,6 +79,7 @@ public class CardScriptable : ScriptableObject
         if (_name != string.Empty)
         {
             // Change file name to match name
+            
         }
     }
     
