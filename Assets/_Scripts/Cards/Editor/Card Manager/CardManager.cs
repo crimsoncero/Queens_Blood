@@ -29,14 +29,13 @@ public class CardManager : EditorWindow
         
          FindAllCards();
         
-        var splitView = new TwoPaneSplitView(0, 250, TwoPaneSplitViewOrientation.Horizontal);
+        var splitView = new TwoPaneSplitView(1, 300, TwoPaneSplitViewOrientation.Horizontal);
         
         rootVisualElement.Add(splitView);
         splitView.Add(_managerElement);
         _rightPane = new VisualElement();
         splitView.Add(_rightPane);
-        
-        MultiColumnListView listView = _managerElement.Q<MultiColumnListView>();
+        var listView = _managerElement.Q<MultiColumnListView>();
         listView.itemsSource = _cardList;
         listView.selectionChanged += OnCardSelectionChanged;
         
