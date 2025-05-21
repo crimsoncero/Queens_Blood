@@ -13,11 +13,11 @@ public class CardManager : EditorWindow
     private List<CardScriptable> _cardList = new List<CardScriptable>();
     
     
-    [MenuItem("Tools/Card Manager")]
+    [MenuItem("Tools/Card Editor")]
     public static void ShowExample()
     {
         CardManager wnd = GetWindow<CardManager>();
-        wnd.titleContent = new GUIContent("Card Manager");
+        wnd.titleContent = new GUIContent("Card Editor");
     }
 
     public void CreateGUI()
