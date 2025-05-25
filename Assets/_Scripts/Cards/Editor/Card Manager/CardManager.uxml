@@ -7,4 +7,8 @@
             <engine:Column name="Power" title="Power" width="20%" cell-template="project://database/Assets/_Scripts/Cards/Editor/Card%20Manager/PowerCellTemplate.uxml?fileID=9197481963319205126&amp;guid=1777e3d32cabc0141a843f64bcde12d7&amp;type=3#PowerCellTemplate" />
         </engine:Columns>
     </engine:MultiColumnListView>
+    <engine:VisualElement name="Button_Bar" style="flex-grow: 1; bottom: 10px; position: absolute; left: 10px; opacity: 0.99; flex-direction: row;">
+        <engine:Button text="New Card" name="New_Card_Button" style="justify-content: flex-end; align-self: flex-start; width: 100px; height: 35px;" />
+        <engine:Button text="Rename Cards" name="Rename_Cards_Button" style="justify-content: flex-end; align-self: flex-start; width: 100px; height: 35px;" />
+    </engine:VisualElement>
 </engine:UXML>
