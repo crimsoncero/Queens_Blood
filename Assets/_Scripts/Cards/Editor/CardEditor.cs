@@ -18,8 +18,11 @@ public class CardEditor : Editor
     private SerializedProperty _name;
     private SerializedProperty _power;
     private SerializedProperty _rank;
+    private SerializedProperty _sprite;
 
     private CardScriptable _card;
+    private bool _isValid;
+    
     private void Awake()
     {
         _cardEffects = AssetDatabase.LoadAssetAtPath<CardEffects>(CARD_EFFECT_PATH);
@@ -34,6 +37,7 @@ public class CardEditor : Editor
         _name = serializedObject.FindProperty("_name");
         _power = serializedObject.FindProperty("_power");
         _rank = serializedObject.FindProperty("_rank");
+        _sprite = serializedObject.FindProperty("_sprite");
         _card = target as CardScriptable;
     }
 
@@ -41,10 +45,20 @@ public class CardEditor : Editor
     {
         serializedObject.Update();
         ShowBasicData();
+        EditorGUILayout.PropertyField(_sprite);
         ShowGrid();
         ShowEvent();
         
         serializedObject.ApplyModifiedProperties();
+
+        
+        _isValid = CardScriptable.IsValid(_card);
+        if (!_isValid)
+        {
+            EditorGUILayout.HelpBox("Card values are not valid.", MessageType.Error);
+        }
+        
+
         EditorUtility.SetDirty((CardScriptable)target);
     }
 
@@ -54,7 +68,7 @@ public class CardEditor : Editor
         EditorGUILayout.PropertyField(_rank);
         EditorGUILayout.PropertyField(_power);
     }
-
+    
     private void ShowEvent()
     {
         EditorGUILayout.PropertyField(_triggerType);
@@ -75,6 +89,10 @@ public class CardEditor : Editor
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    private void OnValidate()
+    {
     }
 
     private void ShowGrid()
