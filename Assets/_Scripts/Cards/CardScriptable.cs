@@ -76,5 +76,27 @@ public class CardScriptable : ScriptableObject
                 throw new ArgumentOutOfRangeException();
         }
     }
-    
+
+
+    public static bool IsValid(CardScriptable card)
+    {
+        if (card == null) return false;
+
+        // ReSharper disable once ReplaceWithSingleAssignment.True
+        var isValid = true;
+        
+        if(card._name == string.Empty)
+            isValid = false;
+        if(card._power < 0)
+            isValid = false;
+        if(card._rank < 0)
+            isValid = false;
+        if(card._sprite == null)
+            isValid = false;
+        if(card[2,2] != TileEffectEnum.Center)
+            isValid = false;
+
+        return isValid;
+
+    }
 }
