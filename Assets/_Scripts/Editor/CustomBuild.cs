@@ -5,7 +5,7 @@ using UnityEditor.Build.Reporting;
 
 public class CustomBuild : MonoBehaviour
 {
-    [MenuItem("Tools/Custom Build/Build Windows %#b")]
+    [MenuItem("Tools/Custom Build/Build Windows #b")]
     public static void BuildWindows()
     {
         string path = $"Builds/WindowsBuild_{System.DateTime.Now:yyyyMMdd_HHmmss}";
