@@ -99,4 +99,7 @@ public class CardScriptable : ScriptableObject
         return isValid;
 
     }
+
+    public CardCondition activationCondition;
+
 }
