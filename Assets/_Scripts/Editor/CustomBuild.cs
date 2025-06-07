@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using System.IO;
@@ -26,6 +27,23 @@ public class CustomBuild : MonoBehaviour
             target = BuildTarget.StandaloneWindows64,
             options = BuildOptions.None
         };
+
+        bool allCardsValid = true;
+        foreach (var asset in AssetDatabase.FindAssets("t:CardScriptable"))
+        {
+            var cPath = AssetDatabase.GUIDToAssetPath(asset);
+            var card = AssetDatabase.LoadAssetAtPath<CardScriptable>(cPath);
+
+            if (!CardScriptable.IsValid(card))
+                allCardsValid = false;
+        }
+
+        if (!allCardsValid)
+        {
+            if (!EditorUtility.DisplayDialog("Build Operation",
+                    "Not all cards are valid, do you wish to continue the build?", "Yes",
+                    "No")) return;
+        }
 
         BuildReport report = BuildPipeline.BuildPlayer(buildOptions);
         BuildSummary summary = report.summary;
