@@ -20,7 +20,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] private Image _standardTemplate;
     [SerializeField] private Image _legendaryTemplate;
 
-    [Header("Pawns")]
+    [Header("Cost")]
     [SerializeField] private Image _replace;
     [SerializeField] private Image _pawnOne;
     [SerializeField] private Image _pawnTwo;
@@ -35,7 +35,6 @@ public class CardUI : MonoBehaviour
     [FormerlySerializedAs("_gridImagesRow3")] [SerializeField] private List<Image> _gridImagesRow2;
     [FormerlySerializedAs("_gridImagesRow4")] [SerializeField] private List<Image> _gridImagesRow3;
     [FormerlySerializedAs("_gridImagesRow5")] [SerializeField] private List<Image> _gridImagesRow4;
-    
     
     [Header("Other")]
     [SerializeField] private Image _character;
