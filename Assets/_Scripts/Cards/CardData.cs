@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 
-public enum CardPawnEnum
+public enum CardCostEnum
 {
     One,
     Two,
@@ -17,30 +18,35 @@ public enum CardRarityEnum
 }
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Scriptable Objects/Card")]
-public class CardScriptable : ScriptableObject
+public class CardData : ScriptableObject
 {
    
     
-    [SerializeField] private UnityEvent<CardScriptable> _onPlay;
-    [SerializeField] private UnityEvent<CardScriptable> _onRemoved;
-    [SerializeField] private UnityEvent<CardScriptable> _onChange;
+    [SerializeField] private UnityEvent<CardData> _onPlay;
+    [SerializeField] private UnityEvent<CardData> _onRemoved;
+    [SerializeField] private UnityEvent<CardData> _onChange;
     [SerializeField] private CardEffects.TriggerType _triggerType;
 
     [SerializeField] private string _name;
-    [SerializeField] private int _power;
-    [SerializeField] private int _rank;
+    [SerializeField, Min(0)] private int _id;
+    [SerializeField] private CardCostEnum _cost;
+    [SerializeField, Min(0)] private int _power;
     [SerializeField] private Sprite _sprite;
+    
+    [SerializeField] private CardRarityEnum _rarity;
 
     [SerializeField] private CardGrid _grid;
     
     public CardGrid Grid => _grid;
     public string Name => _name;
+    public int ID => _id;
     public int Power => _power;
-    public int Rank => _rank;
     public Sprite Sprite => _sprite;
-    public UnityEvent<CardScriptable> OnPlay => _onPlay;
-    public UnityEvent<CardScriptable> OnRemoved => _onRemoved;
-    public UnityEvent<CardScriptable> OnChange => _onChange;
+    public CardRarityEnum Rarity => _rarity;
+    public CardCostEnum Cost => _cost;
+    public UnityEvent<CardData> OnPlay => _onPlay;
+    public UnityEvent<CardData> OnRemoved => _onRemoved;
+    public UnityEvent<CardData> OnChange => _onChange;
 
     private void OnValidate()
     {
@@ -69,7 +75,7 @@ public class CardScriptable : ScriptableObject
     }
 
 
-    public static bool IsValid(CardScriptable card)
+    public static bool IsValid(CardData card)
     {
         if (card == null) return false;
 
@@ -79,8 +85,6 @@ public class CardScriptable : ScriptableObject
         if(card._name == string.Empty)
             isValid = false;
         if(card._power < 0)
-            isValid = false;
-        if(card._rank < 0)
             isValid = false;
         if(card._sprite == null)
             isValid = false;

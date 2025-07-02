@@ -13,7 +13,7 @@ public class CardManager : EditorWindow
     private VisualElement _rightPane;
     private VisualElement _managerElement;
     private MultiColumnListView _listView;
-    private List<CardScriptable> _cardList = new List<CardScriptable>();
+    private List<CardData> _cardList = new List<CardData>();
     
     
     [MenuItem("Tools/Card Editor")]
@@ -59,17 +59,17 @@ public class CardManager : EditorWindow
     private void OnCardSelectionChanged(IEnumerable<object> selectedCards)
     {
         _rightPane.Clear();
-        InspectorElement i = new InspectorElement(selectedCards.First() as CardScriptable);
+        InspectorElement i = new InspectorElement(selectedCards.First() as CardData);
         _rightPane.Add(i);
     }
 
     private void FindAllCards()
     {
-        var allObjectGuids = AssetDatabase.FindAssets("t:CardScriptable");
-        _cardList = new List<CardScriptable>();
+        var allObjectGuids = AssetDatabase.FindAssets("t:CardData");
+        _cardList = new List<CardData>();
         foreach (var guid in allObjectGuids)
         {
-            _cardList.Add(AssetDatabase.LoadAssetAtPath<CardScriptable>(AssetDatabase.GUIDToAssetPath(guid)));
+            _cardList.Add(AssetDatabase.LoadAssetAtPath<CardData>(AssetDatabase.GUIDToAssetPath(guid)));
         }  
     }
 
@@ -81,10 +81,10 @@ public class CardManager : EditorWindow
                 "What?! NO!!")) return;
         
         
-        foreach (var asset in AssetDatabase.FindAssets("t:CardScriptable"))
+        foreach (var asset in AssetDatabase.FindAssets("t:CardData"))
         {
             var path = AssetDatabase.GUIDToAssetPath(asset);
-            var card = AssetDatabase.LoadAssetAtPath<CardScriptable>(path);
+            var card = AssetDatabase.LoadAssetAtPath<CardData>(path);
             
             if(!string.IsNullOrEmpty(card.Name))
                 AssetDatabase.RenameAsset(path, $"{card.Name}");
@@ -95,7 +95,7 @@ public class CardManager : EditorWindow
 
     private void CreateNewCard()
     {
-        var card = CreateInstance<CardScriptable>();
+        var card = CreateInstance<CardData>();
         AssetDatabase.CreateAsset(card, CARD_PATH + "NewCard.asset");
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

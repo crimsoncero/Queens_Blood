@@ -11,12 +11,12 @@ public class CardEffects : ScriptableObject
         OnChange,
     }
 
-    public void DoNothing(CardScriptable card)
+    public void DoNothing(CardData card)
     {
         return;
     }
 
-    public void IncreaseAlliesPower(CardScriptable card, int power)
+    public void IncreaseAlliesPower(CardData card, int power)
     {
         
     }
