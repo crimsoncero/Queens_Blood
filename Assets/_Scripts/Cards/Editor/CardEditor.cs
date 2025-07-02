@@ -106,13 +106,13 @@ public class CardEditor : Editor
 
         CardScriptable card = _card;
         GUILayout.BeginVertical("box");
-        for (int i = 0; i < CardScriptable.GRID_HEIGHT; i++)
+        for (int i = 0; i < CardGrid.GRID_HEIGHT; i++)
         {
             GUILayout.BeginHorizontal();
-            for (int j = 0; j < CardScriptable.GRID_WIDTH; j++)
+            for (int j = 0; j < CardGrid.GRID_WIDTH; j++)
             {
-                TileEffectEnum tile = card[i, j];
-                var index = i * CardScriptable.GRID_HEIGHT + j;
+                TileEffectEnum tile = card.Grid[i, j];
+                var index = i * CardGrid.GRID_HEIGHT + j;
 
                 string texName = tile switch
                 {
@@ -132,7 +132,7 @@ public class CardEditor : Editor
                 var buttonSkin = GUI.skin.button;
                 GUI.skin.button.padding = new RectOffset(5, 5, 5, 5);
                 
-                if (i == CardScriptable.GRID_WIDTH / 2 && j == CardScriptable.GRID_HEIGHT / 2)
+                if (i == CardGrid.GRID_WIDTH / 2 && j == CardGrid.GRID_HEIGHT / 2)
                 {
                     GUI.enabled = false;                    
                 }
@@ -150,7 +150,7 @@ public class CardEditor : Editor
                 }
                 GUI.enabled = true;
                 GUI.skin.button = buttonSkin;
-                card[i, j] = tile;
+                card.Grid[i, j] = tile;
 
             }
             GUILayout.EndHorizontal();
@@ -164,14 +164,14 @@ public class CardEditor : Editor
     private void ResetGrid()
     {
         CardScriptable card = (CardScriptable)target;
-        for (int i = 0; i < CardScriptable.GRID_HEIGHT; i++)
+        for (int i = 0; i < CardGrid.GRID_HEIGHT; i++)
         {
-            for (int j = 0; j < CardScriptable.GRID_WIDTH; j++)
+            for (int j = 0; j < CardGrid.GRID_WIDTH; j++)
             {
-                if(i == CardScriptable.GRID_HEIGHT / 2 && j == CardScriptable.GRID_WIDTH / 2)
-                    card[i, j] = TileEffectEnum.Center;
+                if(i == CardGrid.GRID_HEIGHT / 2 && j == CardGrid.GRID_WIDTH / 2)
+                    card.Grid[i, j] = TileEffectEnum.Center;
                 else
-                    card[i, j] = TileEffectEnum.None;
+                    card.Grid[i, j] = TileEffectEnum.None;
             }
         }
     }

@@ -2,22 +2,24 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-[Serializable]
-public enum TileEffectEnum
-{
-    None,
-    Pawn,
-    Effect,
-    PawnAndEffect,
-    Center,
-}
 
+public enum CardPawnEnum
+{
+    One,
+    Two,
+    Three,
+    Replace,
+}
+public enum CardRarityEnum
+{
+    Standard,
+    Legendary,
+}
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Scriptable Objects/Card")]
 public class CardScriptable : ScriptableObject
 {
-    public const int GRID_WIDTH = 5;
-    public const int GRID_HEIGHT = 5;
+   
     
     [SerializeField] private UnityEvent<CardScriptable> _onPlay;
     [SerializeField] private UnityEvent<CardScriptable> _onRemoved;
@@ -28,21 +30,10 @@ public class CardScriptable : ScriptableObject
     [SerializeField] private int _power;
     [SerializeField] private int _rank;
     [SerializeField] private Sprite _sprite;
+
+    [SerializeField] private CardGrid _grid;
     
-    public TileEffectEnum[] Grid = new TileEffectEnum[GRID_WIDTH * GRID_HEIGHT]
-    {
-        TileEffectEnum.None ,TileEffectEnum.None, TileEffectEnum.None, TileEffectEnum.None,TileEffectEnum.None,
-        TileEffectEnum.None ,TileEffectEnum.None, TileEffectEnum.None, TileEffectEnum.None,TileEffectEnum.None,
-        TileEffectEnum.None ,TileEffectEnum.None, TileEffectEnum.Center, TileEffectEnum.None,TileEffectEnum.None,
-        TileEffectEnum.None ,TileEffectEnum.None, TileEffectEnum.None, TileEffectEnum.None,TileEffectEnum.None,
-        TileEffectEnum.None ,TileEffectEnum.None, TileEffectEnum.None, TileEffectEnum.None,TileEffectEnum.None
-    };
-    public TileEffectEnum this[int i, int j]
-    {
-        get => Grid[i * GRID_HEIGHT + j];
-        set => Grid[i * GRID_HEIGHT + j] = value;
-    }
-    
+    public CardGrid Grid => _grid;
     public string Name => _name;
     public int Power => _power;
     public int Rank => _rank;
@@ -93,13 +84,9 @@ public class CardScriptable : ScriptableObject
             isValid = false;
         if(card._sprite == null)
             isValid = false;
-        if(card[2,2] != TileEffectEnum.Center)
-            isValid = false;
+        
 
         return isValid;
 
     }
-
-    public CardCondition activationCondition;
-
 }
