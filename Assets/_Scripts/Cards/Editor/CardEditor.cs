@@ -5,7 +5,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CustomEditor(typeof(CardScriptable))]
+[CustomEditor(typeof(CardData))]
 public class CardEditor : Editor
 {
     private const string CARD_EFFECT_PATH = "Assets/Scriptables/Settings/Card Effects.asset";
@@ -17,10 +17,11 @@ public class CardEditor : Editor
     private SerializedProperty _onChange;
     private SerializedProperty _name;
     private SerializedProperty _power;
-    private SerializedProperty _rank;
     private SerializedProperty _sprite;
-
-    private CardScriptable _card;
+    private SerializedProperty _rarity;
+    private SerializedProperty _cost;
+    private SerializedProperty _id;
+    private CardData _card;
     private bool _isValid;
     
     private void Awake()
@@ -36,9 +37,11 @@ public class CardEditor : Editor
         _onChange = serializedObject.FindProperty("_onChange");
         _name = serializedObject.FindProperty("_name");
         _power = serializedObject.FindProperty("_power");
-        _rank = serializedObject.FindProperty("_rank");
         _sprite = serializedObject.FindProperty("_sprite");
-        _card = target as CardScriptable;
+        _rarity = serializedObject.FindProperty("_rarity");
+        _cost = serializedObject.FindProperty("_cost");
+        _id = serializedObject.FindProperty("_id");
+        _card = target as CardData;
     }
 
     public override void OnInspectorGUI()
@@ -52,20 +55,22 @@ public class CardEditor : Editor
         serializedObject.ApplyModifiedProperties();
 
         
-        _isValid = CardScriptable.IsValid(_card);
+        _isValid = CardData.IsValid(_card);
         if (!_isValid)
         {
             EditorGUILayout.HelpBox("Card values are not valid.", MessageType.Error);
         }
         
 
-        EditorUtility.SetDirty((CardScriptable)target);
+        EditorUtility.SetDirty((CardData)target);
     }
 
     private void ShowBasicData()
     {
         EditorGUILayout.PropertyField(_name);
-        EditorGUILayout.PropertyField(_rank);
+        EditorGUILayout.PropertyField(_id);
+        EditorGUILayout.PropertyField(_rarity);
+        EditorGUILayout.PropertyField(_cost);
         EditorGUILayout.PropertyField(_power);
     }
     
@@ -104,15 +109,15 @@ public class CardEditor : Editor
             ResetGrid();
         GUILayout.EndHorizontal();
 
-        CardScriptable card = _card;
+        CardData card = _card;
         GUILayout.BeginVertical("box");
-        for (int i = 0; i < CardGrid.GRID_HEIGHT; i++)
+        for (int i = 0; i < CardGrid.HEIGHT; i++)
         {
             GUILayout.BeginHorizontal();
-            for (int j = 0; j < CardGrid.GRID_WIDTH; j++)
+            for (int j = 0; j < CardGrid.WIDTH; j++)
             {
                 TileEffectEnum tile = card.Grid[i, j];
-                var index = i * CardGrid.GRID_HEIGHT + j;
+                var index = i * CardGrid.HEIGHT + j;
 
                 string texName = tile switch
                 {
@@ -132,7 +137,7 @@ public class CardEditor : Editor
                 var buttonSkin = GUI.skin.button;
                 GUI.skin.button.padding = new RectOffset(5, 5, 5, 5);
                 
-                if (i == CardGrid.GRID_WIDTH / 2 && j == CardGrid.GRID_HEIGHT / 2)
+                if (i == CardGrid.WIDTH / 2 && j == CardGrid.HEIGHT / 2)
                 {
                     GUI.enabled = false;                    
                 }
@@ -163,12 +168,12 @@ public class CardEditor : Editor
 
     private void ResetGrid()
     {
-        CardScriptable card = (CardScriptable)target;
-        for (int i = 0; i < CardGrid.GRID_HEIGHT; i++)
+        CardData card = (CardData)target;
+        for (int i = 0; i < CardGrid.HEIGHT; i++)
         {
-            for (int j = 0; j < CardGrid.GRID_WIDTH; j++)
+            for (int j = 0; j < CardGrid.WIDTH; j++)
             {
-                if(i == CardGrid.GRID_HEIGHT / 2 && j == CardGrid.GRID_WIDTH / 2)
+                if(i == CardGrid.HEIGHT / 2 && j == CardGrid.WIDTH / 2)
                     card.Grid[i, j] = TileEffectEnum.Center;
                 else
                     card.Grid[i, j] = TileEffectEnum.None;
